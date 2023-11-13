@@ -30,28 +30,33 @@ impl Config {
     }
 
     pub fn init_config(args: &[String]) -> Result<(), &'static str> {
-        
-        let get_user = env::var("USER").unwrap();
-        let dir_path = format!("/home/{}/.config/mpm", get_user);
 
-        if let Err(err) = fs::create_dir(&dir_path) {
-            //eprint!("Error creating dir: {}", err);
+        if args.len() == 4 {
+            let get_user = env::var("USER").unwrap();
+            let dir_path = format!("/home/{}/.config/mpm", get_user);
+
+            if let Err(err) = fs::create_dir(&dir_path) {
+                //eprint!("Error creating dir: {}", err);
+            }
+
+            let file_path = format!("/home/{}/.config/mpm/mpm.conf", get_user);
+            let file = fs::File::create(&file_path);
+
+            let mut f = OpenOptions::new()
+                .write(true)
+                .append(true)
+                .open(&file_path)
+                .unwrap();
+
+            writeln!(f, "{}", &args[2]).unwrap();
+            writeln!(f, "{}", &args[3]).unwrap();
+            println!("successfully update username and token");
+
+            process::exit(0);
+
+        } else {
+            return Err("mpm init <username> <password>");
         }
-
-        let file_path = format!("/home/{}/.config/mpm/mpm.conf", get_user);
-        let file = fs::File::create(&file_path);
-
-        let mut f = OpenOptions::new()
-            .write(true)
-            .append(true)
-            .open(&file_path)
-            .unwrap();
-
-        writeln!(f, "{}", &args[2]).unwrap();
-        writeln!(f, "{}", &args[3]).unwrap();
-        println!("successfully update username and token");
-
-        Ok(())
 
     }
 
@@ -117,7 +122,6 @@ pub async fn run(config: &Config) -> Result<(), Box<dyn Error>> {
         println!("Repo created successfully");
     } else {
         eprintln!("Repo was not created");
-        process::exit(1);
     }
 
     Ok(())
