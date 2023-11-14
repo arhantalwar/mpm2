@@ -120,6 +120,8 @@ pub async fn run(config: &Config) -> Result<(), Box<dyn Error>> {
 
     if client.status().is_success() {
         println!("Repo created successfully");
+        let remote_url = format!("git@github.com:{}/{}.git", auth.username, config.repo_name);
+        println!("Push at : {remote_url}");
     } else {
         eprintln!("Repo was not created");
     }
