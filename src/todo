@@ -1,0 +1,8 @@
+1) [ ] mpm ruth . -> Init remote git repo and push to it.
+2) [X] mpm ruth   -> Init remote git repo.
+3) [X] mpm ruth . -p -> Flag for private remote repo.
+4) [X] mpm ruth -p -> Flag for private repo.
+5) [X] mpm init username token -> Create mpm.conf .
+    > mkdir (/home/$USER/.config/mpm).
+    > touch mpm.conf (mpm.conf).
+    > add username and key.
